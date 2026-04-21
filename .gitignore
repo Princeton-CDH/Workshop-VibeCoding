@@ -1,0 +1,15 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.Python
+
+# Project directories created by /setup (not part of the template)
+data/
+outputs/
+scripts/
+
+# OS
+.DS_Store
+Thumbs.db

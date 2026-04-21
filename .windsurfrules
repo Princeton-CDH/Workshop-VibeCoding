@@ -1,0 +1,75 @@
+# Data Analysis Style Guide
+
+These guidelines apply to all data analysis work in this project. Follow them unless explicitly asked to do otherwise.
+
+---
+
+## Approach
+
+**Explore before building.** When given a new dataset or question, start by reading and describing the data. Understand the shape, the ranges, the missing values, and the surprises before writing any analysis code.
+
+**Plan before implementing.** For any task involving more than a single script, describe what you intend to do and in what order before writing code. Flag any assumptions or edge cases you're making decisions about.
+
+**Describe before executing.** Before running a script or command, tell the user in plain language what it will do and what output to expect.
+
+**Verify every output.** After generating a result, check that it looks plausible. Report row counts, sanity-check distributions, and flag anything unexpected. Do not present results without inspecting them first.
+
+---
+
+## Data Handling
+
+**Source data is read-only.** Never write to, overwrite, or modify files in `data/`. All transformations produce new files in `outputs/`.
+
+**Make missing data explicit.** Do not silently drop nulls or fill them with defaults without explaining the choice. If dropping rows with missing values, report how many were dropped and why.
+
+**Document transformations.** When cleaning or reshaping data, write a comment explaining *why* each transformation is done, not just *what* it does. Include the original column name and what the new version represents.
+
+**Prefer Polars for tabular work.** Use Polars for reading, cleaning, filtering, and aggregating CSV data. Use pandas only if a specific library requires it.
+
+---
+
+## Code Quality
+
+**Scripts must be self-contained.** Each script should run correctly from the project root with no manual setup beyond activating the virtual environment. Include the input file path and output file path clearly at the top.
+
+**Use meaningful names.** Variable names should describe what the data represents (`artwork_count_by_year`, not `df2` or `result`). Column names in outputs should be lowercase with underscores.
+
+**One script per task.** Don't append new analysis to an existing script. Create a new script in `scripts/` with a descriptive name.
+
+**Include a header comment.** Every script should begin with a one- or two-line comment describing what it does and what it produces.
+
+---
+
+## Output Quality
+
+**Label all charts.** Every chart must have a title, labeled axes, and units where applicable. A chart without labels is not a finished output.
+
+**Save outputs, don't just display them.** Charts go to `outputs/` as `.png` or `.html`. Tables go to `outputs/` as `.csv` or `.md`. Never produce an output that only appears in the terminal.
+
+**Name outputs descriptively.** Use filenames that describe the content: `acquisitions-by-year.png`, not `chart1.png`. Use hyphens, not underscores or spaces.
+
+**Report numbers in context.** When reporting a count or percentage, include the denominator. "312 works" is less useful than "312 works out of 130,000 (0.24%)."
+
+---
+
+## Communication
+
+**Explain findings in plain language.** After producing a result, summarize what it shows in one or two sentences — no jargon, no code references. Write as if explaining to a researcher who is not looking at the script.
+
+**Distinguish observation from interpretation.** Use "the data shows..." for direct observations and "this suggests..." or "one interpretation is..." for inferences. Be clear about what the data can and cannot tell you.
+
+**Flag surprises.** If a result looks unexpected — a spike, a gap, an outlier, a suspiciously round number — say so explicitly before moving on. Do not smooth over anomalies.
+
+**Note limitations.** If a question cannot be fully answered with the available data, say so clearly. Describe what additional data would be needed and why.
+
+---
+
+## File Naming and Organization
+
+| Type | Location | Naming pattern |
+|---|---|---|
+| Source data | `data/` | Original filename, unchanged |
+| Cleaned data | `outputs/` | `[original-name]-cleaned.csv` |
+| Charts | `outputs/` | `[description].png` or `.html` |
+| Reports | `outputs/` | `[description]-report.md` |
+| Scripts | `scripts/` | `[verb]-[subject].py` (e.g., `clean-artworks.py`) |
