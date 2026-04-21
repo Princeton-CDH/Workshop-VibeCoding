@@ -26,6 +26,8 @@ These guidelines apply to all data analysis work in this project. Follow them un
 
 **Prefer Polars for tabular work.** Use Polars for reading, cleaning, filtering, and aggregating CSV data. Use pandas only if a specific library requires it.
 
+**Prefer Altair for charts.** Use Altair for all visualizations. Use matplotlib or seaborn only if a specific chart type is not supported by Altair.
+
 ---
 
 ## Code Quality
@@ -73,3 +75,50 @@ These guidelines apply to all data analysis work in this project. Follow them un
 | Charts | `outputs/` | `[description].png` or `.html` |
 | Reports | `outputs/` | `[description]-report.md` |
 | Scripts | `scripts/` | `[verb]-[subject].py` (e.g., `clean-artworks.py`) |
+| Notebooks | `scripts/` | `[subject].py` (Marimo notebooks are `.py` files) |
+
+---
+
+## Marimo Notebooks
+
+Use Marimo for interactive exploration and display. Key patterns:
+
+**Cell structure** — each cell is a function decorated with `@app.cell`. Parameters declare dependencies on other cells; return values expose variables downstream.
+
+```python
+@app.cell
+def _():
+    import marimo as mo
+    import polars as pl
+    return mo, pl
+
+@app.cell
+def _(pl):
+    df = pl.read_csv("data/your-file.csv")
+    return (df,)
+
+@app.cell
+def _(mo):
+    search = mo.ui.text(label="Search", placeholder="Enter a name...")
+    search          # returning a UI element displays it
+    return (search,)
+
+@app.cell
+def _(df, mo, pl, search):
+    if search.value:
+        results = df.filter(
+            pl.col("ColumnName").str.to_lowercase().str.contains(search.value.lower())
+        )
+    else:
+        results = df.head(20)
+    mo.vstack([
+        mo.md(f"**{len(results)} result(s)**"),
+        mo.table(results),
+    ])
+```
+
+**Run a notebook:** `.venv/bin/marimo run scripts/notebook.py`
+
+**Edit a notebook:** `.venv/bin/marimo edit scripts/notebook.py`
+
+**When adapting `scripts/notebook.py`:** update the `read_csv` path, replace `"ColumnName"` with the column to search, adjust labels. Save the adapted version under a descriptive name — keep `notebook.py` as the blank template.

@@ -24,7 +24,7 @@ python3 -m venv .venv
 
 Run in the terminal:
 ```
-.venv/bin/pip install polars
+.venv/bin/pip install polars altair marimo
 ```
 
 Confirm the install succeeded before continuing.
@@ -72,6 +72,6 @@ Tell the user:
 > - Python virtual environment in `.venv/` with Polars installed
 > - Fresh git history initialized
 > - `/brief` — run this next to add your data and fill in your project brief
-> - `/snapshot` — run this any time you want to save your progress
+> - **Source Control panel** (`Cmd+Shift+G` / `Ctrl+Shift+G`) — use this any time you want to save your progress
 >
 > Run `/brief` to continue.
