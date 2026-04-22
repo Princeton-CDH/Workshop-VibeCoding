@@ -1,0 +1,21 @@
+site_name: Vibe Coding Done Right
+site_url: https://princeton-cdh.github.io/Workshop-VibeCoding/
+repo_url: https://github.com/Princeton-CDH/Workshop-VibeCoding
+repo_name: Get the Starter Kit
+
+theme:
+  name: material
+  features:
+    - content.code.copy
+    - navigation.top
+
+markdown_extensions:
+  - pymdownx.superfences:
+      custom_fences:
+        - name: "*"
+          class: ""
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - admonition
+  - pymdownx.details
