@@ -59,19 +59,6 @@ Tell the user:
 > - `data/[DATA_FILENAME]` — your source data (or empty `data/` if skipped)
 > - `AGENTS.md` — your project brief, filled in with your data and goals
 >
-> Open `AGENTS.md` and take a look — does it capture your project accurately? If anything needs adjusting, make your edits now.
+> Open `AGENTS.md` and take a look — does it capture your project accurately? If anything needs adjusting, make your edits now. When you're happy with it, use the Source Control panel (`Cmd+Shift+G` / `Ctrl+Shift+G`) to save a snapshot — type a short description and click **Commit All**.
 >
-> When you're ready, say **"commit"** and I'll save everything.
-
-Wait for the user to confirm before continuing.
-
-### 6. Save a snapshot
-
-Run in the terminal:
-```
-git add -A && git commit -m "Add data and project brief"
-```
-
-Tell the user:
-
-> Your project brief is saved. You're ready to start exploring — just ask me a question about your data.
+> You're ready to start exploring — just ask me a question about your data.
