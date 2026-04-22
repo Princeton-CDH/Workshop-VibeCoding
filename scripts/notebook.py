@@ -6,15 +6,17 @@ app = marimo.App(width="medium")
 
 @app.cell
 def _():
+    import sys
     import marimo as mo
     import polars as pl
+    sys.path.insert(0, "scripts")  # allows importing modules from scripts/
     return mo, pl
 
 
 @app.cell
 def _(pl):
-    # TODO: update path and column names for your dataset
-    df = pl.read_csv("data/your-file.csv")
+    # TODO: update path for your dataset
+    df = pl.read_csv("data/your-file.csv", infer_schema_length=0)
     return (df,)
 
 
@@ -28,16 +30,14 @@ def _(mo):
 
 @app.cell
 def _(df, mo, pl, search):
-    # Filter rows where a column contains the search term (case-insensitive)
     # TODO: replace "ColumnName" with the column you want to search
     if search.value:
         results = df.filter(
             pl.col("ColumnName").str.to_lowercase().str.contains(search.value.lower())
         )
+        mo.vstack([
+            mo.md(f"**{len(results)} result(s)**"),
+            mo.table(results),
+        ])
     else:
-        results = df.head(20)
-
-    mo.vstack([
-        mo.md(f"**{len(results)} result(s)**"),
-        mo.table(results),
-    ])
+        mo.md("Enter a search term above.")
