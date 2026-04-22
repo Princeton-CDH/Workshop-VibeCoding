@@ -23,10 +23,14 @@ Open `my-project/` in [Windsurf](https://windsurf.com/download), then in the Cas
 
 ## What's Included
 
-| File | Purpose |
-|---|---|
-| `AGENTS.md` | Project brief template — filled in by `/brief` |
-| `.windsurfrules` | Analysis style guidelines for Cascade |
-| `.windsurf/workflows/setup.md` | `/setup` workflow |
-| `.windsurf/workflows/brief.md` | `/brief` workflow |
-| `scripts/notebook.py` | Marimo notebook skeleton for interactive exploration |
+| File                           | Purpose                                              |
+| ------------------------------ | ---------------------------------------------------- |
+| `AGENTS.md`                    | Project brief template — filled in by `/brief`       |
+| `.windsurfrules`               | Analysis style guidelines for Cascade                |
+| `.windsurf/workflows/setup.md` | `/setup` workflow                                    |
+| `.windsurf/workflows/brief.md` | `/brief` workflow                                    |
+| `scripts/notebook.py`          | Marimo notebook skeleton for interactive exploration |
+
+---
+
+*This starter kit and tutorial were developed with assistance from [Claude Code](https://claude.ai).*
