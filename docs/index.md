@@ -18,7 +18,7 @@ Vibe coding means describing what you want in plain language and letting an AI w
 
 This is genuinely powerful. But without a little structure, vibe coding projects become a mess fast. You end up with a folder full of `output_final_v3_REAL.csv` files, no idea which script produced which result, and no way to get back to a clean starting point. You can't share it with a colleague because even *you* don't remember what you did last Tuesday.
 
-This tutorial gives you the minimum structure that prevents that mess — and nothing more. You won't become a software engineer. You'll become someone who can use AI tools without losing track of their own work.
+This tutorial gives you the minimum structure that prevents that mess — and nothing more. You won't become a software engineer. You'll become someone who can use AI tools withou1t losing track of their own work.
 
 **The mantra: your project folder is your lab notebook.**
 
@@ -109,7 +109,6 @@ Cascade handles the infrastructure:
 2. Sets up a Python virtual environment (`.venv`) with Polars installed
 3. Resets the git history (removes the starter kit's history and starts fresh for your project)
 4. Creates a `.gitignore`
-5. Makes your first commit: `Initial project setup`
 
 > **What's a virtual environment?** It's a private copy of Python just for this project. Any packages Cascade installs will live here, contained to this folder, and won't interfere with anything else on your machine.
 
@@ -125,8 +124,15 @@ Cascade will walk you through a short conversation:
 
 1. **Asks for your data:** paste the link to the MoMA Artworks CSV — `https://media.githubusercontent.com/media/MuseumofModernArt/collection/refs/heads/main/Artworks.csv` — and Cascade downloads it to `data/` for you (the file is large, so this may take a moment)
 2. **Asks for your research questions:** what do you want to understand about this data? For example: *Who is represented in this collection? How has it grown over time? What mediums and departments dominate?*
-3. Fills in `AGENTS.md` with your data source and research questions — your project brief is ready before you've written a single line of code
-4. Pauses so you can review `AGENTS.md` before saving — say **"commit"** when you're satisfied
+3. Fills in `AGENTS.md` with your data source and research questions
+
+Once `/brief` is done, review `AGENTS.md` in the editor — does it capture your project accurately? When you're happy with it, save your first snapshot using the **Source Control panel**:
+
+1. Click the Source Control icon in the left sidebar (or `Cmd+Shift+G` / `Ctrl+Shift+G`)
+2. Type a short description — something like `Initial project setup`
+3. Click **Commit All**
+
+This saves a checkpoint you can always return to.
 
 ### The Golden Rule: Raw Data Is Sacred
 
@@ -260,25 +266,29 @@ Once you've done a few rounds of exploration, you'll start noticing patterns in 
 
 Start by asking Cascade to write a lookup function as a Python module:
 
-> Write a script called scripts/lookup_artist.py that defines a function `find_artist_works(name, artworks_path)` — it takes an artist name and the path to Artworks.csv, searches case-insensitively, and returns a Polars dataframe with columns: Title, Date, Medium, Department, AccessionNumber. Use partial name matching.
+> Write a script called scripts/lookup_artist.py that defines a function `find_artist_works(name, artworks_path, artists_path=None)`. It should:
+> - Read Artworks.csv using `pl.read_csv(artworks_path, infer_schema_length=0)`
+> - Filter rows where the Artist column contains the search name (case-insensitive, partial match)
+> - Select columns: Title, Date, Medium, Department, AccessionNumber, ConstituentID
+> - If artists_path is provided, join Artists.csv on ConstituentID to add ArtistBio, Nationality, BeginDate, EndDate — ConstituentID is comma-separated for multi-artist works, so extract the first value with `.str.split(",").list.first().str.strip_chars()` before joining
+> - Drop ConstituentID from the final result and return the dataframe
 
 Writing it as a function (rather than a command-line script) means the notebook can import and call it directly.
 
-### Enrich It With the Artists Dataset
+### Add the Artists Dataset
 
-MoMA also publishes `Artists.csv` in the same repository — biographical data (birth year, death year, nationality) keyed to the same artist IDs used in Artworks. Add it:
+MoMA also publishes `Artists.csv` — biographical data (birth year, death year, nationality) keyed to the same artist IDs used in Artworks. Add it:
 
 > Download `https://media.githubusercontent.com/media/MuseumofModernArt/collection/refs/heads/main/Artists.csv` to data/Artists.csv
 
-Then extend the lookup function:
-
-> Update scripts/lookup_artist.py so that `find_artist_works` also joins on Artists.csv using ConstituentID and adds columns: Bio, Nationality, BeginDate, EndDate to the results.
-
 ### Create a Marimo Notebook
 
-The starter kit includes a skeleton notebook at `scripts/notebook.py`. Ask Cascade to adapt it rather than build from scratch:
+The starter kit includes a skeleton notebook at `scripts/notebook.py`. Ask Cascade to adapt it:
 
-> Adapt scripts/notebook.py for artist lookup. Update the data path to data/Artworks.csv, change the search column to Artist, and import `find_artist_works` from scripts/lookup_artist.py to do the filtering. Save the result as scripts/artist-lookup-notebook.py.
+> Adapt scripts/notebook.py for artist lookup. Save as scripts/artist-lookup-notebook.py with these specifics:
+> - In the imports cell: add `import sys` and `sys.path.insert(0, "scripts")`, then `from lookup_artist import find_artist_works`
+> - Search input: `mo.ui.text(label="Artist name", placeholder="e.g. Picasso")`
+> - Results cell: assign to an `output` variable in each branch, then reference `output` as the last line (do not use `return` for display) — if `search.value` is not empty, call `find_artist_works(search.value, artworks_path="data/Artworks.csv", artists_path="data/Artists.csv")` and set `output = mo.vstack([mo.md(f"**{len(results)} work(s) found**"), mo.table(results)])`; otherwise set `output = mo.md("Enter an artist name to search the collection.")`
 
 Open it from the terminal — run this yourself, not by asking Cascade:
 
