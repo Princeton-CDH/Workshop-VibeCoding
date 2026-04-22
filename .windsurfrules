@@ -105,16 +105,19 @@ def _(mo):
 
 @app.cell
 def _(df, mo, pl, search):
+    # For conditional display: assign to output in each branch,
+    # then reference output as the last line. Never use return for display.
     if search.value:
         results = df.filter(
             pl.col("ColumnName").str.to_lowercase().str.contains(search.value.lower())
         )
+        output = mo.vstack([
+            mo.md(f"**{len(results)} result(s)**"),
+            mo.table(results),
+        ])
     else:
-        results = df.head(20)
-    mo.vstack([
-        mo.md(f"**{len(results)} result(s)**"),
-        mo.table(results),
-    ])
+        output = mo.md("Enter a search term above.")
+    output
 ```
 
 **Run a notebook:** `.venv/bin/marimo run scripts/notebook.py`

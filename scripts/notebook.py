@@ -31,13 +31,15 @@ def _(mo):
 @app.cell
 def _(df, mo, pl, search):
     # TODO: replace "ColumnName" with the column you want to search
+    # Assign output in each branch, then reference it as the last line to display
     if search.value:
         results = df.filter(
             pl.col("ColumnName").str.to_lowercase().str.contains(search.value.lower())
         )
-        mo.vstack([
+        output = mo.vstack([
             mo.md(f"**{len(results)} result(s)**"),
             mo.table(results),
         ])
     else:
-        mo.md("Enter a search term above.")
+        output = mo.md("Enter a search term above.")
+    output
