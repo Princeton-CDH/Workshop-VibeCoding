@@ -29,18 +29,9 @@ Run in the terminal:
 
 Confirm the install succeeded before continuing.
 
-### 4. Reset git history
+### 4. Update .gitignore
 
-This removes the starter kit's git history and starts a clean repository for this project.
-
-Run in the terminal:
-```
-rm -rf .git && git init
-```
-
-### 5. Create .gitignore
-
-Create a file at `.gitignore` with this content:
+Replace the file at `.gitignore` with this content:
 
 ```
 # Python
@@ -55,7 +46,7 @@ __pycache__/
 Thumbs.db
 ```
 
-### 6. Make first commit
+### 5. Make first commit
 
 Run in the terminal:
 ```
