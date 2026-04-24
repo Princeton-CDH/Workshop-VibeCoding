@@ -38,7 +38,7 @@ def _(df, mo, pl, search):
         )
         output = mo.vstack([
             mo.md(f"**{len(results)} result(s)**"),
-            mo.table(results),
+            mo.ui.table(results),
         ])
     else:
         output = mo.md("Enter a search term above.")
