@@ -22,3 +22,7 @@ markdown_extensions:
   - pymdownx.tasklist:
       clickable_checkbox: true
 
+nav:
+  - Tutorial: 'index.md'
+  - quick_ref.md
+  - troubleshooting.md
