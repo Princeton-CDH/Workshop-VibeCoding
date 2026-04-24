@@ -64,6 +64,10 @@ That's it. No extensions to install. The AI assistant (called **Cascade**) is bu
 
 You should see a clean editor with a sidebar on the left and a **Cascade** panel available on the right. That's your AI assistant.
 
+!!! info "What if I don't see the Cascade panel?"
+    **Tip:** If you don't see the Cascade panel, look for the chat icon in the sidebar or go to **View → Cascade**.
+
+
 ### Getting Oriented
 
 Use **File → Open Folder** to open your project folder. Cascade automatically reads everything in it. You'll work in four areas:
@@ -75,8 +79,6 @@ Use **File → Open Folder** to open your project folder. Cascade automatically 
 
 When Cascade creates or modifies files, they appear in the file browser in real time. Click any file to inspect it — this is how you'll review what the AI produces.
 
-> **Tip:** If you don't see the Cascade panel, look for the chat icon in the sidebar or go to **View → Cascade**.
-
 ### Choosing a Model
 
 Windsurf gives you access to several AI models. Before you start, check which one is active and switch to a good free option if needed.
@@ -85,7 +87,8 @@ In the Cascade panel, look for the model name displayed near the bottom of the c
 
 For this tutorial, select **SWE-1.6** — Windsurf's own coding model, available on the free tier. It's well-suited for data analysis work and doesn't require a paid subscription.
 
-> **What if I don't see SWE-1.6?** The available models depend on your account tier and what Windsurf has released. If SWE-1.6 isn't listed, look for another SWE model (SWE-1, SWE-1.5) or any model marked as free. The tutorial works with any of them.
+!!! info "What if I don't see SWE-1.6?"
+    **What if I don't see SWE-1.6?** The available models depend on your account tier and what Windsurf has released. If SWE-1.6 isn't listed, look for another SWE model (SWE-1, SWE-1.5) or any model marked as free. The tutorial works with any of them.
 
 ---
 
@@ -103,6 +106,16 @@ Open the Cascade panel and type:
 /setup
 ```
 
+!!! info "Accepting Cascade's Work"
+    When Cascade writes code or creates files, it may ask for your approval
+    before making changes. This is a safety feature! For each proposed action, you can:
+
+    - **Accept** — let Cascade proceed
+    - **Reject** — stop it and give different instructions
+    - **Read first** — click on the file to see what Cascade wrote before deciding
+
+    Always pause on anything that touches your `data/` folder. Everything else is recoverable.
+
 Cascade handles the infrastructure:
 
 1. Creates `data/`, `outputs/`, and `scripts/` subfolders
@@ -110,7 +123,8 @@ Cascade handles the infrastructure:
 3. Resets the git history (removes the starter kit's history and starts fresh for your project)
 4. Creates a `.gitignore`
 
-> **What's a virtual environment?** It's a private copy of Python just for this project. Any packages Cascade installs will live here, contained to this folder, and won't interfere with anything else on your machine.
+!!! info "What's a virtual environment?"
+    It's a private copy of Python just for this project. Any packages Cascade installs will live here, contained to this folder, and won't interfere with anything else on your machine.
 
 ### Run /brief
 
@@ -122,8 +136,17 @@ Now add your data and fill in your project brief. Type in Cascade:
 
 Cascade will walk you through a short conversation:
 
-1. **Asks for your data:** paste the link to the MoMA Artworks CSV — `https://media.githubusercontent.com/media/MuseumofModernArt/collection/refs/heads/main/Artworks.csv` — and Cascade downloads it to `data/` for you (the file is large, so this may take a moment)
-2. **Asks for your research questions:** what do you want to understand about this data? For example: *Who is represented in this collection? How has it grown over time? What mediums and departments dominate?*
+1. **Asks for your data:** paste the link to the MoMA Artworks CSV:
+```
+https://media.githubusercontent.com/media/MuseumofModernArt/collection/refs/heads/main/Artworks.csv
+```
+Cascade downloads it to `data/` for you (the file is large, so this may take a moment)
+2. **Asks for your research questions:** what do you want to understand about this data? For example:
+```
+Who is represented in this collection?
+How has it grown over time?
+What mediums and departments dominate?
+```
 3. Fills in `AGENTS.md` with your data source and research questions
 
 Once `/brief` is done, review `AGENTS.md` in the editor — does it capture your project accurately? When you're happy with it, save your first snapshot using the **Source Control panel**:
@@ -189,19 +212,23 @@ Once your `AGENTS.md` looks right, commit your changes using the Source Control 
 2. Type a short description in the message box — something like `Refine project brief`
 3. Click **Commit All**
 
-> **Why commit?** Each commit is a saved checkpoint in your project history — like saving your game. You can always rewind to any previous commit if something goes wrong. We'll save after each major step.
+!!! info "Why commit?"
+    Each commit is a saved checkpoint in your project history — like saving progress in a video game. You can always rewind to any previous commit if something goes wrong. We'll save after each major step.
 
 ---
 
 ## Part 4: Exploring Your Data
 
-Now the fun part. You have data, you have a briefing document, and Cascade knows what the project is about. Let's dig in.
+Now the fun part. You have data, you have a briefing document, and Cascade has context on what the project is about. Let's dig in.
 
 ### Start With a Summary
 
-Go back to Cascade. Because your `AGENTS.md` exists, Cascade already knows about your data and goals. Start broad:
+Go back to Cascade. Because your `AGENTS.md` exists, Cascade already has information about your data and goals. Start broad:
 
-> Give me an overview of data/Artworks.csv — how many rows and columns, what the columns are, and any immediate observations about the data. Use Polars.
+```
+Give me an overview of data/Artworks.csv — how many rows and columns,
+what the columns are, and any immediate observations about the data. Use Polars.
+```
 
 Cascade will read the file and report back: row and column counts, column names and types, a sense of what's there. You didn't write any code. That's the whole idea.
 
@@ -209,23 +236,22 @@ Cascade will read the file and report back: row and column counts, column names 
 
 Don't wait for a perfect plan — start asking. The MoMA collection has some immediately interesting angles:
 
-> How has the collection grown over time? Plot the number of artworks acquired each year using the DateAcquired column. Save it to outputs/acquisitions-by-year.png
+```
+How has the collection grown over time? Plot the number of artworks
+acquired each year using the DateAcquired column. Save it to
+outputs/acquisitions-by-year.png
+```
 
 Look at the chart. Does the shape make sense? You should see relatively low acquisition numbers in the early decades, growth through the mid-20th century, and spikes around major donations. The 1964 and 1968 spikes are particularly dramatic — that's worth investigating:
 
-> There's a huge spike in 1968. Can you check what's in the CreditLine column for those rows? I want to know if it was a single major gift.
+```
+There's a huge spike in 1968. Can you check what's in the CreditLine column
+for those rows? I want to know if it was a single major gift.
+```
 
 This back-and-forth is normal — expected, even. **You are the domain expert. Cascade is the code generator.** Your job is to look at outputs and say whether they make sense.
 
-### Accepting Cascade's Work
 
-When Cascade writes code or creates files, it may ask for your approval before making changes. For each proposed action, you can:
-
-- **Accept** — let Cascade proceed
-- **Reject** — stop it and give different instructions
-- **Read first** — click on the file to see what Cascade wrote before deciding
-
-Always pause on anything that touches your `data/` folder. Everything else is recoverable.
 
 ### Review What Cascade Produces
 
@@ -238,17 +264,33 @@ This is the most important habit to build: **look at everything Cascade makes.**
 
 Choose one or more of the follow-up questions to explore (or ask your own questions):
 
-> What's the gender breakdown of artists in the collection? Note that Gender values in this dataset are wrapped in parentheses like `(male)` and `(female)` — strip those before displaying results. How many works have unknown gender?
+```
+What's the gender breakdown of artists in the collection?
+Note that Gender values in this dataset are wrapped in parentheses
+like `(male)` and `(female)` — strip those before displaying results.
+How many works have unknown gender?
+```
 
-> Which departments have the most works? Create a bar chart. Save it to outputs/works-by-department.png
+```
+Which departments have the most works? Create a bar chart.
+Save it to outputs/works-by-department.png
+```
 
-> What are the 10 most common mediums? Skip rows where Medium is null.
+```
+What are the 10 most common mediums? Skip rows where Medium is null.
+```
 
-> Which nationalities are most represented? Show me the top 20. Note that Nationality values are wrapped in parentheses — strip them for display.
+```
+Which nationalities are most represented? Show me the top 20.
+Note that Nationality values are wrapped in parentheses — strip them for display.
+```
 
 Each question might produce a script, a chart, a table, or just a text summary. Everything goes to `outputs/`. You're building up a picture of how the collection is shaped — and your domain knowledge tells you when something looks right or worth questioning.
 
-> What percentage of works have no nationality recorded for the artist? Does that vary by department?
+```
+What percentage of works have no nationality recorded for the artist?
+Does that vary by department?
+```
 
 One thing you'll notice quickly: works with multiple creators store all their names, genders, and nationalities concatenated in a single field — `(male) (female)` or `Eames, Charles, Eames, Ray`. This makes simple grouping imprecise. That's a real data modeling decision MoMA made, and it shapes what questions are easy versus hard to answer. Hitting these edges is a feature, not a failure — it's how you discover what to investigate next.
 
@@ -260,35 +302,54 @@ Open the Source Control panel (`Cmd+Shift+G` / `Ctrl+Shift+G`), type `Initial ex
 
 ## Part 5: From Tool to Workflow
 
-Once you've done a few rounds of exploration, you'll start noticing patterns in what you ask Cascade to do. Some tasks happen once — a chart, a quick count. Others are things you'll want to run again and again. This section shows how to build a reusable lookup tool, display results interactively in a notebook, and wrap the whole thing in a workflow command.
+Once you've done a few rounds of exploration, you'll start noticing patterns in what you ask Cascade to do. Some tasks happen once — a chart, a quick count. Others are things you'll want to run again and again. This section shows how to build a reusable lookup tool, display results interactively in a code notebook, and wrap the whole thing in a workflow command.
 
 ### Build the Lookup Module
 
 Start by asking Cascade to write a lookup function as a Python module:
 
-> Write a script called scripts/lookup_artist.py that defines a function `find_artist_works(name, artworks_path, artists_path=None)`. It should:
-> - Read Artworks.csv using `pl.read_csv(artworks_path, infer_schema_length=0)`
-> - Filter rows where the Artist column contains the search name (case-insensitive, partial match)
-> - Select columns: Title, Date, Medium, Department, AccessionNumber, ConstituentID
-> - If artists_path is provided, join Artists.csv on ConstituentID to add ArtistBio, Nationality, BeginDate, EndDate — ConstituentID is comma-separated for multi-artist works, so extract the first value with `.str.split(",").list.first().str.strip_chars()` before joining
-> - Drop ConstituentID from the final result and return the dataframe
+```
+Write a script called scripts/lookup_artist.py that defines a function
+`find_artist_works(name, artworks_path, artists_path=None)`. It should:
 
-Writing it as a function (rather than a command-line script) means the notebook can import and call it directly.
+- Read Artworks.csv using `pl.read_csv(artworks_path, infer_schema_length=0)`
+- Filter rows where the Artist column contains the search name (case-insensitive, partial match)
+- Select columns: Title, Date, Medium, Department, AccessionNumber, ConstituentID
+- If artists_path is provided, join Artists.csv on ConstituentID to add ArtistBio,
+  Nationality, BeginDate, EndDate — ConstituentID is comma-separated for
+  multi-artist works, so extract the first value with `.str.split(",").list.first().str.strip_chars()` before joining
+- Drop ConstituentID from the final result and return the dataframe
+```
+
+Writing it as a function (rather than a command-line script) means the code is easier to resue; in our case, we're going to import it into the notebook and call it directly.
 
 ### Add the Artists Dataset
 
 MoMA also publishes `Artists.csv` — biographical data (birth year, death year, nationality) keyed to the same artist IDs used in Artworks. Add it:
 
-> Download `https://media.githubusercontent.com/media/MuseumofModernArt/collection/refs/heads/main/Artists.csv` to data/Artists.csv
+```
+Download `https://media.githubusercontent.com/media/MuseumofModernArt/collection/refs/heads/main/Artists.csv`
+to data/Artists.csv
+```
 
 ### Create a Marimo Notebook
 
 The starter kit includes a skeleton notebook at `scripts/notebook.py`. Ask Cascade to adapt it:
 
-> Adapt scripts/notebook.py for artist lookup. Save as scripts/artist-lookup-notebook.py with these specifics:
-> - In the imports cell: add `import sys` and `sys.path.insert(0, "scripts")`, then `from lookup_artist import find_artist_works`
-> - Search input: `mo.ui.text(label="Artist name", placeholder="e.g. Picasso")`
-> - Results cell: assign to an `output` variable in each branch, then reference `output` as the last line (do not use `return` for display) — if `search.value` is not empty, call `find_artist_works(search.value, artworks_path="data/Artworks.csv", artists_path="data/Artists.csv")` and set `output = mo.vstack([mo.md(f"**{len(results)} work(s) found**"), mo.table(results)])`; otherwise set `output = mo.md("Enter an artist name to search the collection.")`
+```
+Adapt scripts/notebook.py for artist lookup.
+Save as scripts/artist-lookup-notebook.py with these specifics:
+
+- In the imports cell: add `import sys` and `sys.path.insert(0, "scripts")`,
+  then `from lookup_artist import find_artist_works`
+- Search input: `mo.ui.text(label="Artist name", placeholder="e.g. Picasso")`
+- Results cell: assign to an `output` variable in each branch, then
+  reference `output` as the last line (do not use `return` for display) —
+  if `search.value` is not empty, call
+  `find_artist_works(search.value, artworks_path="data/Artworks.csv", artists_path="data/Artists.csv")`
+  and set `output = mo.vstack([mo.md(f"**{len(results)} work(s) found**"), mo.table(results)])`;
+  otherwise set `output = mo.md("Enter an artist name to search the collection.")`
+```
 
 Open it from the terminal — run this yourself, not by asking Cascade:
 
@@ -298,11 +359,16 @@ Open it from the terminal — run this yourself, not by asking Cascade:
 
 Marimo starts a local web server and opens the notebook in your browser — type a name, results appear as a clean table. The terminal stays busy while it runs; that's normal. Press `Ctrl+C` when you're done to stop it.
 
-If the layout or display isn't quite right, describe what you want:
+If the layout or display isn't quite right, describe what you want. For example:
 
-> The table is showing all 30 columns. Can you limit it to just Title, Date, Medium, Department, AccessionNumber, Nationality, and Bio?
+```
+The table is showing all 30 columns. Can you limit it to just Title, Date,
+Medium, Department, AccessionNumber, Nationality, and Bio?
+```
 
-> Can you add a count of results at the top — "X works found for [name]"?
+```
+Can you add a count of results at the top — "X works found for [name]"?
+```
 
 ### Turn It Into a Workflow
 
@@ -461,7 +527,7 @@ Make sure you opened the project folder (the one containing `.windsurf/`) in Win
 
 ## Going Further: Adding Your Own Workflows
 
-Once you've completed a few projects, you may find yourself giving Cascade the same kinds of instructions over and over. You can save those as workflows — reusable commands you trigger with `/`.
+Once you've completed a few projects, you may find yourself giving Cascade the same kinds of instructions over and over. You can save those as workflows — reusable commands you trigger with `/`, just like the `/setup` and `/brief` tasks we started with.
 
 Each workflow is a `.md` file in `.windsurf/workflows/` with a short YAML header:
 
