@@ -2,6 +2,9 @@ site_name: Vibe Coding Done Right
 site_url: https://princeton-cdh.github.io/Workshop-VibeCoding/
 repo_url: https://github.com/Princeton-CDH/Workshop-VibeCoding
 repo_name: Get the Starter Kit
+copyright: >-
+  Copyright &copy; 2026 Jeri Wieringa &mdash;
+  <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a>
 
 theme:
   name: material
