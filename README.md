@@ -33,4 +33,8 @@ Open `my-project/` in [Windsurf](https://windsurf.com/download), then in the Cas
 
 ---
 
-*This starter kit and tutorial were developed with assistance from [Claude Code](https://claude.ai).*
+*This starter kit and tutorial were developed Jeri Wieringa with assistance from [Claude Code](https://claude.ai).*
+
+---
+
+Licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
